@@ -14,6 +14,7 @@ spec:
   - name: kube-scheduler
     image: k8s.gcr.io/hyperkube:v1.10.5
     command:
+      - /hyperkube
       - kube-scheduler
       - --v=0
       - --logtostderr=true

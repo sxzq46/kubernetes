@@ -10,7 +10,6 @@ metadata:
   namespace: kube-system
 spec:
   hostNetwork: true
-  priorityClassName: system-cluster-critical
   containers :
   - name: kube-apiserver
     image: k8s.gcr.io/hyperkube:v1.10.5

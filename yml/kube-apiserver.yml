@@ -10,6 +10,7 @@ metadata:
   namespace: kube-system
 spec:
   hostNetwork: true
+  priorityClassName: system-cluster-critical
   containers :
   - name: kube-apiserver
     image: k8s.gcr.io/hyperkube:v1.10.5
@@ -24,24 +25,24 @@ spec:
       - --insecure-port=0
       - --advertise-address=172.29.150.192
       - --service-cluster-ip-range=10.254.0.0/12
-      - --service-node-port-range=30000-32000
+      - --service-node-port-range=30000-33000
       - --etcd-servers=https://172.29.150.223:2379,https://172.29.150.224:2379,https://172.29.150.225:2379
-      - --etcd-cafile=/etc/etcd/ssl/ca.pem
+      - --etcd-cafile=/etc/etcd/ssl/etcd-ca.pem
       - --etcd-certfile=/etc/etcd/ssl/etcd.pem
       - --etcd-keyfile=/etc/etcd/ssl/etcd-key.pem
-      - --client-ca-file=/etc/kubernetes/ssl/ca.pem
-      - --tls-cert-file=/etc/kubernetes/ssl/kube-apiserver.pem
-      - --tls-private-key-file=/etc/kubernetes/ssl/kube-apiserver-key.pem
-      - --kubelet-client-certificate=/etc/kubernetes/ssl/kube-apiserver.pem
-      - --kubelet-client-key=/etc/kubernetes/ssl/kube-apiserver-key.pem
-      - --service-account-key-file=/etc/kubernetes/ssl/sa.pub
+      - --client-ca-file=/etc/kubernetes/pki/ca.pem
+      - --tls-cert-file=/etc/kubernetes/pki/apiserver.pem
+      - --tls-private-key-file=/etc/kubernetes/pki/apiserver-key.pem
+      - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver.pem
+      - --kubelet-client-key=/etc/kubernetes/pki/apiserver-key.pem
+      - --service-account-key-file=/etc/kubernetes/pki/sa.pub
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
       - --admission-control=Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,ResourceQuota
       - --authorization-mode=Node,RBAC
       - --enable-bootstrap-token-auth=true
-      - --requestheader-client-ca-file=/etc/kubernetes/ssl/front-proxy-ca.pem
-      - --proxy-client-cert-file=/etc/kubernetes/ssl/front-proxy-client.pem
-      - --proxy-client-key-file=/etc/kubernetes/ssl/front-proxy-client-key.pem
+      - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.pem
+      - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.pem
+      - --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client-key.pem
       - --requestheader-allowed-names=aggregator
       - --requestheader-group-headers=X-Remote-Group
       - --requestheader-extra-headers-prefix=X-Remote-Extra-
@@ -68,7 +69,7 @@ spec:
     volumeMounts:
     - mountPath: /var/log/kubernetes
       name: k8s-audit-log
-    - mountPath: /etc/kubernetes/ssl
+    - mountPath: /etc/kubernetes/pki
       name: k8s-certs
       readOnly: true
     - mountPath: /etc/ssl/certs
@@ -89,7 +90,7 @@ spec:
       type: DirectoryOrCreate
     name: k8s-audit-log
   - hostPath:
-      path: /etc/kubernetes/ssl
+      path: /etc/kubernetes/pki
       type: DirectoryOrCreate
     name: k8s-certs
   - hostPath:
@@ -103,6 +104,11 @@ spec:
   - hostPath:
       path: /etc/ssl/certs
       type: DirectoryOrCreate
+    name: ca-certs
+  - hostPath:
+      path: /etc/etcd/ssl
+      type: DirectoryOrCreate
+    name: etcd-ca-certs
     name: ca-certs
   - hostPath:
       path: /etc/etcd/ssl

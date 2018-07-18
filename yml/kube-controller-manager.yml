@@ -19,11 +19,11 @@ spec:
       - --v=0
       - --logtostderr=true
       - --address=127.0.0.1
-      - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-      - --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem
-      - --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem
-      - --service-account-private-key-file=/etc/kubernetes/ssl/sa.key
-      - --kubeconfig=/etc/kubernetes/kube-controller-manager.conf
+      - --root-ca-file=/etc/kubernetes/pki/ca.pem
+      - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.pem
+      - --cluster-signing-key-file=/etc/kubernetes/pki/ca-key.pem
+      - --service-account-private-key-file=/etc/kubernetes/pki/sa.key
+      - --kubeconfig=/etc/kubernetes/controller-manager.conf
       - --leader-elect=true
       - --use-service-account-credentials=true
       - --node-monitor-grace-period=40s
@@ -46,20 +46,20 @@ spec:
       requests:
         cpu: 200m
     volumeMounts:
-    - mountPath: /etc/kubernetes/ssl
+    - mountPath: /etc/kubernetes/pki
       name: k8s-certs
       readOnly: true
     - mountPath: /etc/ssl/certs
       name: ca-certs
       readOnly: true
-    - mountPath: /etc/kubernetes/kube-controller-manager.conf
+    - mountPath: /etc/kubernetes/controller-manager.conf
       name: kubeconfig
       readOnly: true
     - mountPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
       name: flexvolume-dir
   volumes:
   - hostPath:
-      path: /etc/kubernetes/ssl
+      path: /etc/kubernetes/pki
       type: DirectoryOrCreate
     name: k8s-certs
   - hostPath:
@@ -67,7 +67,7 @@ spec:
       type: DirectoryOrCreate
     name: ca-certs
   - hostPath:
-      path: /etc/kubernetes/kube-controller-manager.conf
+      path: /etc/kubernetes/controller-manager.conf
       type: FileOrCreate
     name: kubeconfig
   - hostPath:

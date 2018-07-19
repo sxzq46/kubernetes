@@ -108,4 +108,4 @@ spec:
       path: /etc/etcd/ssl
       type: DirectoryOrCreate
     name: etcd-ca-certs
-    name: ca-certs
+

@@ -114,9 +114,10 @@ spec:
       serviceAccountName: kube-proxy
       containers:
       - name: kube-proxy
-        image: k8s.gcr.io/kube-proxy-amd64:v1.10.0
+        image: k8s.gcr.io/hyperkube:v1.10.5
         command:
-        - /usr/local/bin/kube-proxy
+        - /hyperkube
+        - kube-proxy
         - --config=/var/lib/kube-proxy/config.conf
         imagePullPolicy: IfNotPresent
         securityContext:

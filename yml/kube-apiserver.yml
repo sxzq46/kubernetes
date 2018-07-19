@@ -20,7 +20,7 @@ spec:
       - --logtostderr=true
       - --allow-privileged=true
       - --bind-address=0.0.0.0
-      - --secure-port=6443
+      - --secure-port=5443
       - --insecure-port=0
       - --advertise-address=172.29.150.192
       - --service-cluster-ip-range=10.254.0.0/12
@@ -109,7 +109,3 @@ spec:
       type: DirectoryOrCreate
     name: etcd-ca-certs
     name: ca-certs
-  - hostPath:
-      path: /etc/etcd/ssl
-      type: DirectoryOrCreate
-    name: etcd-ca-certs

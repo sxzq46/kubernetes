@@ -111,9 +111,9 @@ spec:
             - name: FELIX_HEALTHENABLED
               value: "true"
             - name: IP_AUTODETECTION_METHOD
-              value: "interface=eth1"
+              value: "interface=eth0"
             - name: IP6_AUTODETECTION_METHOD
-              value: "interface=eth1"
+              value: "interface=eth0"
             - name: ETCD_CA_CERT_FILE
               value: "/etc/etcd/ssl/etcd-ca.pem"
             - name: ETCD_CERT_FILE

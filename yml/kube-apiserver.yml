@@ -23,7 +23,7 @@ spec:
       - --secure-port=5443
       - --insecure-port=0
       - --advertise-address=172.29.150.192
-      - --service-cluster-ip-range=10.254.0.0/12
+      - --service-cluster-ip-range=10.254.0.0/16
       - --service-node-port-range=30000-33000
       - --etcd-servers=https://172.29.150.223:2379,https://172.29.150.224:2379,https://172.29.150.225:2379
       - --etcd-cafile=/etc/etcd/ssl/etcd-ca.pem
